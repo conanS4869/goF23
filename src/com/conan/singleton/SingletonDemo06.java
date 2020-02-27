@@ -9,9 +9,10 @@ public enum SingletonDemo06 {
     }
 }
 
-class SingletonDemo06Test{
+class SingletonDemo06Test {
     public static void main(String[] args) {
         SingletonDemo06 instance = SingletonDemo06.INSTANCE;
         SingletonDemo06 instance2 = SingletonDemo06.INSTANCE;
-        System.out.println(instance==instance2);
+        System.out.println(instance == instance2);
     }
+}
