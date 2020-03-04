@@ -1,18 +1,14 @@
 package com.conan.proxy.syn;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ListUnsafe {
+public class TestJUC {
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
+        CopyOnWriteArrayList<String> list= new CopyOnWriteArrayList();
         for (int i = 0; i < 10000; i++) {
-            new Thread(() -> {
-                synchronized (list) {
+            new Thread(()->{
                 list.add(Thread.currentThread().getName());
-                }
-            }
-            ).start();
+            }).start();
         }
         try {
             Thread.sleep(3000);

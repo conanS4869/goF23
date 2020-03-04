@@ -2,7 +2,7 @@ package com.conan.proxy.syn;
 
 public class BankUnsafe {
     public static void main(String[] args) {
-        Account account = new Account(100, "conan的钱");
+        Account account = new Account(1000, "conan的钱");
         Drawing you = new Drawing(account, 50, "你");
         Drawing wife = new Drawing(account, 100, "你老婆");
         wife.start();
@@ -38,21 +38,23 @@ class Drawing extends Thread {
 
     @Override
     public void run() {
-        if (account.money - drawingMoney < 0) {
-            System.out.println(Thread.currentThread().getName() + "钱不够，取不了");
-            return;
+        //锁account
+        synchronized (account) {
+            if (account.money - drawingMoney < 0) {
+                System.out.println(Thread.currentThread().getName() + "钱不够，取不了");
+                return;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            account.money = account.money - drawingMoney;
+            nowMoney = nowMoney + drawingMoney;
+            System.out.println(account.name + "余额为：" + account.money);
+            //Thread.currentThread().getName() == this.getName()
+            System.out.println(this.getName() + "手里的钱= " + nowMoney);
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        account.money = account.money - drawingMoney;
-        nowMoney = nowMoney + drawingMoney;
-        System.out.println(account.name + "余额为：" + account.money);
-        //Thread.currentThread().getName() == this.getName()
-        System.out.println(this.getName() + "手里的钱= " + nowMoney);
-
     }
 }
 
